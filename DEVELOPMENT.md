@@ -64,5 +64,28 @@ Answer to questions :
 - What's the identifier...? : (Enter for default)
 - What's the description...? : Visual workflow editor side-by-side with code
 - Initialize a git repository? : No (or n) because already done
-- Bundle the source code with Webpack? : Yes (Important for React).
+- Which bundler to use? : esbuild (Needed for React).
 - Which package manager...? : npm.
+
+## 3. Install VS 2022 with "Desktop Development with C++"
+
+Download VS2022 and install with "Desktop Development with C++"
+
+## 4. Install Python
+
+Download and install https://www.python.org/downloads/
+
+## 5. Continue installation
+
+`npm install`
+
+`npm install tree-sitter-cli --save-dev`
+
+`npm install react react-flow d3 @types/react @types/d3 --save-dev`
+
+`npm install @types/react-dom react-dom react-flow-renderer --save`
+
+`npm install webpack webpack-cli ts-loader --save-dev`
+
+`npm install style-loader css-loader --save-dev`
+

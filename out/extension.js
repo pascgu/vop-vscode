@@ -34,26 +34,46 @@ var __importStar = (this && this.__importStar) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.activate = activate;
-exports.deactivate = deactivate;
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 const vscode = __importStar(require("vscode"));
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
+const path = __importStar(require("path"));
 function activate(context) {
-    // Use the console to output diagnostic information (console.log) and errors (console.error)
-    // This line of code will only be executed once when your extension is activated
-    console.log('Congratulations, your extension "vop-vscode" is now active!');
-    // The command has been defined in the package.json file
-    // Now provide the implementation of the command with registerCommand
-    // The commandId parameter must match the command field in package.json
-    const disposable = vscode.commands.registerCommand('vop-vscode.helloWorld', () => {
-        // The code you place here will be executed every time your command is executed
-        // Display a message box to the user
-        vscode.window.showInformationMessage('Hello World from vop-vscode!');
-    });
-    context.subscriptions.push(disposable);
+    let currentPanel = undefined;
+    context.subscriptions.push(vscode.commands.registerCommand('vop-vscode.showWorkflow', () => {
+        if (currentPanel) {
+            currentPanel.reveal();
+            return;
+        }
+        currentPanel = vscode.window.createWebviewPanel('vop-vscode.workflow', 'Workflow', vscode.ViewColumn.Beside, {
+            enableScripts: true,
+            localResourceRoots: [
+                vscode.Uri.file(path.join(context.extensionPath, 'dist'))
+            ],
+            retainContextWhenHidden: true,
+            enableCommandUris: true,
+        });
+        currentPanel.onDidDispose(() => {
+            currentPanel = undefined;
+        });
+        // Get the path to the bundle.js file
+        const bundlePath = vscode.Uri.file(path.join(context.extensionPath, 'dist', 'bundle.js'));
+        // Convert the path to a webview URI
+        const bundleUri = currentPanel.webview.asWebviewUri(bundlePath);
+        const cssPath = vscode.Uri.file(path.join(context.extensionPath, 'dist', 'reactflow.css'));
+        const cssUri = currentPanel.webview.asWebviewUri(cssPath);
+        // HTML content for the webview
+        currentPanel.webview.html = `
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Workflow</title>
+                    <link rel="stylesheet" type="text/css" href="${cssUri}"> </head>
+                <body>
+                    <div id="root" style="width: 100%; height: 100vh;"></div>
+                    <script src="${bundleUri}"></script>
+                </body>
+                </html>
+            `;
+    }));
 }
-// This method is called when your extension is deactivated
-function deactivate() { }
-//# sourceMappingURL=extension.js.map
