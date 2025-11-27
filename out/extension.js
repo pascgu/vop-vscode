@@ -47,9 +47,7 @@ function activate(context) {
             enableScripts: true,
             localResourceRoots: [
                 vscode.Uri.file(path.join(context.extensionPath, 'dist'))
-            ],
-            retainContextWhenHidden: true,
-            enableCommandUris: true,
+            ]
         });
         currentPanel.onDidDispose(() => {
             currentPanel = undefined;

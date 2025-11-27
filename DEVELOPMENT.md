@@ -36,20 +36,20 @@ You must select the Python interpreter if not already done.
 
 Here you'll see some backend messages (like debug console) and the frontend messages that starts with '[VoP Webview Logs]'
 
-# Create Vscode extension
-
-## 1. Create github project
+# Create github project
 
 Create a repos in github (vop-vscode) and clone it here : C:\Users\xxxxx\source\repos
+
+# Install on windows
 
 ## 1. Install NodeJS and npm
 
 - Go to : https://nodejs.org/fr/download
-- Select version LTS (in my case : 24.11.1)
+- Select version LTS (in my case : 20.19.6) (pb with v24 when installing tree-sitter)
 - Click Windows Installer (.msi) to download
 - Run the msi. Check the "add to PATH" is checked (restart your terminal if already opened).
 
-## 2. Install Yo
+## 2. Install Yeoman and the generator
 
 `npm install -g yo generator-code`
 
@@ -79,8 +79,6 @@ Download and install https://www.python.org/downloads/
 
 `npm install`
 
-`npm install tree-sitter-cli --save-dev`
-
 `npm install react react-flow d3 @types/react @types/d3 --save-dev`
 
 `npm install @types/react-dom react-dom react-flow-renderer --save`
@@ -89,3 +87,83 @@ Download and install https://www.python.org/downloads/
 
 `npm install style-loader css-loader --save-dev`
 
+## [!WARNING] Stopped here for Windows because can't compile tree-sitter
+
+# install on Ubuntu/WSL 24.04.3 LTS
+
+## install compilator and python 3.11
+```
+sudo apt update
+sudo apt install -y build-essential software-properties-common
+```
+
+add Deadsnakes repo
+```
+sudo add-apt-repository ppa:deadsnakes/ppa
+sudo apt update
+```
+
+install python 3.11 and needed modules (dev, venv, distutils, etc.)
+```
+sudo apt install -y python3.11 python3.11-dev python3.11-venv python3.11-distutils
+sudo apt remove -y command-not-found
+```
+
+Configure python 3.11 to be default python (instead of 3.12 which was the default).
+Use a bigger priority (313 > 312)
+```
+sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 312
+sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11 313
+sudo update-alternatives --config python3
+```
+
+Check it returns 3.11 : python3 --version
+
+Install pip
+```
+sudo python3 -m ensurepip --upgrade
+```
+Check it : pip3 --version
+
+Add alias for python and pip :
+```
+echo "alias python='python3'" >> ~/.bashrc
+echo "alias pip='pip3'" >> ~/.bashrc
+source ~/.bashrc
+```
+
+Check it returns 3.11 : python --version
+Check ir returns 24.0 : pip --version
+
+## install Node.js 20 LTS and npm
+
+```
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+```
+
+```
+sudo apt install -y nodejs
+```
+
+Check it returns v20.19.6 : `node -v`
+Check it returns 10.8.2 : `npm -v`
+
+## install Yeoman and the generator
+
+```
+sudo npm install -g yo generator-code
+```
+
+## reinstall npm modules
+
+```
+cd vop-vscode
+npm install
+```
+
+## install tree-sitter
+
+```
+npm install tree-sitter tree-sitter-python tree-sitter-javascript
+npm install --save-dev @types/node
+```
