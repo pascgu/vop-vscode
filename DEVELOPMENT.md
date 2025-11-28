@@ -164,6 +164,15 @@ npm install
 ## install tree-sitter
 
 ```
-npm install tree-sitter tree-sitter-python tree-sitter-javascript
+npm install web-tree-sitter
 npm install --save-dev @types/node
 ```
+
+Download WASM from https://github.com/tree-sitter/tree-sitter.github.io/tree/master :
+
+- tree-sitter-javascript.wasm
+- tree-sitter-python.wasm
+
+and save them to ./parsers
+
+

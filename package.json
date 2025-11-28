@@ -2,6 +2,7 @@
   "name": "vop-vscode",
   "displayName": "vop-vscode",
   "description": "An extension to visualize and modify code as a workflow.",
+  "publisher": "vop",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.85.0"
@@ -20,13 +21,14 @@
     ]
   },
   "scripts": {
-    "vscode:prepublish": "run-s compile bundle bundle:frontend copy:css",
+    "vscode:prepublish": "run-s compile bundle bundle:frontend copy:css copy:wasm",
     "compile": "tsc -p ./",
     "watch": "node esbuild.js --watch",
     "bundle": "node esbuild.js",
     "bundle:frontend": "webpack --config webpack.config.js --mode development",
     "copyWIN:css": "copy node_modules\\reactflow\\dist\\style.css dist\\reactflow.css",
     "copy:css": "cp node_modules/reactflow/dist/style.css dist/reactflow.css",
+    "copy:wasm": "cp node_modules/web-tree-sitter/tree-sitter.wasm dist/",
     "test": "vscode-test"
   },
   "dependencies": {
@@ -38,9 +40,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "reactflow": "^11.11.4",
-    "tree-sitter": "^0.25.0",
-    "tree-sitter-javascript": "^0.25.0",
-    "tree-sitter-python": "^0.25.0"
+    "web-tree-sitter": "^0.25.10"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",

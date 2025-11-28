@@ -1,23 +1,57 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import ReactFlow, { Background, Controls } from 'reactflow';
+import ReactFlow, { Background, Controls, useNodesState, useEdgesState, OnNodesChange, OnEdgesChange } from 'reactflow';
 
-const initialNodes = [
-  { id: '1', position: { x: 100, y: 100 }, data: { label: 'Node 1' } },
-  { id: '2', position: { x: 300, y: 100 }, data: { label: 'Node 2' } },
-];
+console.log("LOG(Webview): WorkflowView module loaded and starting execution.");
 
-const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
+interface Node {
+  id: string;
+  position: { x: number; y: number };
+  data: { label: string };
+}
 
-const rootElement = document.getElementById('root');
-if (rootElement) {
-  const root = ReactDOM.createRoot(rootElement);
-  root.render(
+interface Edge {
+  id: string;
+  source: string;
+  target: string;
+}
+
+const WorkflowView = () => {
+  console.log("LOG(Webview): Nodes:", window.nodes);
+  console.log("LOG(Webview): Edges:", window.edges);
+  const [nodes, setNodes, onNodesChange] = useNodesState(window.nodes || []);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(window.edges || []);
+  
+  return (
     <div style={{ width: '100%', height: '100%' }}>
-      <ReactFlow nodes={initialNodes} edges={initialEdges}>
+      <ReactFlow 
+        nodes={nodes} 
+        edges={edges}
+        onNodesChange={onNodesChange as OnNodesChange} 
+        onEdgesChange={onEdgesChange as OnEdgesChange}
+        fitView // Center the diagram
+        >
         <Background />
         <Controls />
       </ReactFlow>
     </div>
   );
+};
+
+const rootElement = document.getElementById('root');
+if (rootElement) {
+  try {
+    console.log("LOG(Webview): Attempting ReactDOM.createRoot..."); 
+    const root = ReactDOM.createRoot(rootElement);
+    
+    console.log("LOG(Webview): Rendering <WorkflowView />..."); 
+    root.render(<WorkflowView />);
+    
+    console.log("LOG(Webview): ReactDOM render process finished.");
+  } catch (e) {
+    console.error("LOG(Webview) CRITICAL ERROR: Failed to mount React application.", e);
+    rootElement.innerHTML = `<h1>Error rendering React. See console for details.</h1>`;
+  }
+} else {
+    console.error("LOG(Webview): Error: #root element not found."); 
 }
