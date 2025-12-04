@@ -11,7 +11,7 @@
     "jsx": "react-jsx",
     "moduleResolution": "node",
     "typeRoots": ["./src", "./node_modules/@types"],
-    "types": ["node"]
+    "types": ["node", "mocha"]
   },
   "include": ["src/**/*"]
 }
