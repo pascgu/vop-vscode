@@ -174,5 +174,3 @@ Download WASM from https://github.com/tree-sitter/tree-sitter.github.io/tree/mas
 - tree-sitter-python.wasm
 
 and save them to ./parsers
-
-
